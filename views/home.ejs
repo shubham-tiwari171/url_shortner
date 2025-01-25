@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>URL Shortener</title>
+    <style>
+      /* Reset and global styles */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f9fa;
+        padding: 20px;
+        /* display: flex; */
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+      h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #333;
+        width: 100%;
+      }
+      .container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        width: 100%;
+      }
+      .form-container {
+        flex: 1;
+        margin-right: 20px;
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      .table-container {
+        flex: 2;
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        overflow-x: auto;
+      }
+      label {
+        font-size: 1rem;
+        color: #555;
+        font-weight: bold;
+      }
+      input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      button {
+        width: 100%;
+        padding: 10px;
+        font-size: 1rem;
+        color: #fff;
+        background-color: #28a745;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+      button:hover {
+        background-color: #218838;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th,
+      td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+      th {
+        background-color: #28a745;
+        color: #fff;
+      }
+      tr:nth-child(even) {
+        background-color: #f9f9f9;
+      }
+      tr:hover {
+        background-color: #f1f1f1;
+      }
+      @media (max-width: 768px) {
+        .container {
+          flex-direction: column;
+        }
+        .form-container {
+          margin-right: 0;
+          margin-bottom: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>URL Shortener</h1>
+    <div class="container">
+      <!-- Form Section -->
+      <div class="form-container">
+        <form method="POST" action="/url">
+          <label for="url">Enter your original URL:</label>
+          <input
+            type="text"
+            id="url"
+            name="url"
+            placeholder="https://example.com"
+            required
+          />
+          <button type="submit">Generate Short URL</button>
+        </form>
+      </div>
+
+      <!-- Table Section -->
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Original URL</th>
+              <th>Short URL</th>
+              <th>Total clicks</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (locals.urls) { %> <% urls.forEach((url) => { %>
+            <tr>
+              <td>
+                <a href="<%= url.redirectURL %>" target="_blank">
+                  <%= url.redirectURL %>
+                </a>
+              </td>
+              <td>
+                <a
+                  href="http://localhost:8001/url/<%= url.shortId %>"
+                  target="_blank"
+                >
+                  http://localhost:8001/url/<%= url.shortId %>
+                </a>
+              </td>
+              <td><%= url.clicks %></td>
+            </tr>
+            <% }); %> <% } else { %>
+            <tr>
+              <td colspan="4" style="text-align: center">No URLs found</td>
+            </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>
