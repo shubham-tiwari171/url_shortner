@@ -43,9 +43,9 @@ async function handleUserLogin(req, res) {
     if (!existingUser) {
       return res.render("login");
     }
-    const sessionId = uuidv4();
-    setUser(sessionId, existingUser);
-    res.cookie("uid", sessionId);
+    //const sessionId = uuidv4();
+    const token = setUser(existingUser);
+    res.cookie("uid", token);
     return res.render("home");
   } catch (err) {}
 }
